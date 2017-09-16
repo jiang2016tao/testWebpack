@@ -18,5 +18,8 @@
   "homepage": "https://github.com/jiang2016tao/testWebpack#readme",
   "devDependencies": {
     "webpack": "^3.6.0"
+  },
+  "dependencies": {
+    "webpack-dev-server": "^2.8.2"
   }
 }
