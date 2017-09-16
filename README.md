@@ -3,7 +3,7 @@
 # webpack打包命令
 webpack app/index.js build/build.js
 # webpack配置文件
-`js
+
 const path = require('path');
 module.exports={
     entry:"./app/index.js",
@@ -22,4 +22,3 @@ module.exports={
         extensions:['js','css','jsx']
     }
 };
-`
