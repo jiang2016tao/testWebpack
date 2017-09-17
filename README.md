@@ -22,3 +22,5 @@ module.exports={
         extensions:['js','css','jsx']
     }
 };
+配置参数的说明参考：http://www.cnblogs.com/skylar/p/webpack-module-bundler.html
+
