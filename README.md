@@ -26,4 +26,23 @@ module.exports={
 # npm 删除模块
 【npm uninstall xxx】删除xxx模块；
 【npm uninstall -g xxx】删除全局模块xxx；
+# webpack-server-dev遇到的问题
+第一次使用命令webpack-server-dev启动发现总是报错：
+```
+ERROR in (webpack)/node_modules/querystring-es3/index.js
+Module not found: Error: Can't resolve './decode' in 'C:\Users\Administrator\App
+Data\Roaming\npm\node_modules\webpack\node_modules\querystring-es3'
+ @ (webpack)/node_modules/querystring-es3/index.js 3:33-52
+ @ (webpack)/node_modules/url/url.js
+ @ (webpack)-dev-server/client?http://localhost:8080
+ @ multi (webpack)-dev-server/client?http://localhost:8080 ./app/index.js
+
+ERROR in (webpack)/node_modules/querystring-es3/index.js
+Module not found: Error: Can't resolve './encode' in 'C:\Users\Administrator\App
+Data\Roaming\npm\node_modules\webpack\node_modules\querystring-es3'
+ @ (webpack)/node_modules/querystring-es3/index.js 4:37-56
+ @ (webpack)/node_modules/url/url.js
+ @ (webpack)-dev-server/client?http://localhost:8080
+ @ multi (webpack)-dev-server/client?http://localhost:8080 ./app/index.js
+```
 
