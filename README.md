@@ -23,4 +23,7 @@ module.exports={
     }
 };
 配置参数的说明参考：http://www.cnblogs.com/skylar/p/webpack-module-bundler.html
+# npm 删除模块
+【npm uninstall xxx】删除xxx模块；
+【npm uninstall -g xxx】删除全局模块xxx；
 
