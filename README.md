@@ -24,7 +24,15 @@ module.exports={
     }
 };
 ```
-配置参数的说明参考：http://www.cnblogs.com/skylar/p/webpack-module-bundler.html
+配置参数的说明参考：http://www.cnblogs.com/skylar/p/webpack-module-bundler.html  
+```
+// 默认加载的包声明
+        new webpack.ProvidePlugin({
+            _: 'lodash',
+            $: "jquery"
+        }),
+```  
+这样就可以在任何页面都可以使用jquery,而不用require去引入了。  
 # npm 删除模块
 【npm uninstall xxx】删除xxx模块；
 【npm uninstall -g xxx】删除全局模块xxx；
