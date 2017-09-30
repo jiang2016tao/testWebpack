@@ -31,7 +31,7 @@ module.exports={
             _: 'lodash',
             $: "jquery"
         }),
-```  
+```
 这样就可以在任何页面都可以使用jquery,而不用require去引入了。  
 # npm 删除模块
 【npm uninstall xxx】删除xxx模块；
