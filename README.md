@@ -83,4 +83,5 @@ resolve:{
 参考官网：http://babeljs.cn/
 webstorm自动将ES6语法js转换为es5的配置：http://www.cnblogs.com/pizitai/p/6830470.html  
 # node-glob学习  
-https://www.cnblogs.com/liulangmao/p/4552339.html
+https://www.cnblogs.com/liulangmao/p/4552339.html  
+const templateFiles = glob.sync(`${urls.page}/*.+(${templateExt.join('|')})`)同步获取文件
