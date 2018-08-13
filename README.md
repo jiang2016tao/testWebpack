@@ -84,4 +84,7 @@ resolve:{
 webstorm自动将ES6语法js转换为es5的配置：http://www.cnblogs.com/pizitai/p/6830470.html  
 # node-glob学习  
 https://www.cnblogs.com/liulangmao/p/4552339.html  
-const templateFiles = glob.sync(`${urls.page}/*.+(${templateExt.join('|')})`)同步获取文件
+const templateFiles = glob.sync(`${urls.page}/*.+(${templateExt.join('|')})`)同步获取文件  
+# 代码分割 - 使用 require.ensure  
+[ webpack 2.2 中文文档](http://www.css88.com/doc/webpack2/guides/code-splitting-require/)
+在项目中，加载入口文件的js比较大，原来有些js文件的初始化函数没有使用require.ensure导致编译打包时，打到入口文件里了。
