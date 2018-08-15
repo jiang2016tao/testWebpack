@@ -85,6 +85,77 @@ webstorm自动将ES6语法js转换为es5的配置：http://www.cnblogs.com/pizit
 # node-glob学习  
 https://www.cnblogs.com/liulangmao/p/4552339.html  
 const templateFiles = glob.sync(`${urls.page}/*.+(${templateExt.join('|')})`)同步获取文件  
-# 代码分割 - 使用 require.ensure  
+# 代码分割  
+## 代码分割 - 使用 require.ensure  
 [ webpack 2.2 中文文档](http://www.css88.com/doc/webpack2/guides/code-splitting-require/)
-在项目中，加载入口文件的js比较大，原来有些js文件的初始化函数没有使用require.ensure导致编译打包时，打到入口文件里了。
+在项目中，加载入口文件的js比较大，原来有些js文件的初始化函数没有使用require.ensure导致编译打包时，打到入口文件里了。  
+user.js文件里：  
+```js
+(function () {
+    var user={
+        init:function(){
+            console.log("zhongguo")
+        }
+    };
+    module.exports=user;
+})();
+```  
+在index.js文件里引入user.js  
+```js
+require("./js/user.js");
+```
+这样打的包就会把index.js和user.js打到同一个文件里。如图可以看出：  
+![image](./wikiImg/ensure_1.png)  
+添加文件account.js  
+```js
+(function () {
+    var account={};
+    module.exports=account;
+})();
+```
+在user.js文件里引用account.js文件，修改user.js:  
+```js
+(function () {
+    var user={
+        init:function(){
+            require.ensure([],function(){
+                console.log("zhongguo");
+                require("./account.js");
+            },"testEnsure");
+        }
+    };
+    module.exports=user;
+})();
+```
+再次打包编译发现多了一个文件：  
+![image](./wikiImg/ensure_2.png)  
+查看编译后的文件  
+![image](./wikiImg/ensure_3.png)  
+可以看到使用require.ensure的时候，只有使用了require的引用才会重新生成一个chunk文件，里面是普通的js代码时，还是会和入口文件打到同一个文件里的。  
+## 代码分割 -使用CommonsChunkPlugin  
+在js文件中我们一般都会使用到第三方的库，很显然我们需要将这些第三方库的js代码给抽取出来作为公共部分，不然我们的入口文件会很大。在项目应用中显然是不合理的。  
+[代码分割 - Libraries](http://www.css88.com/doc/webpack2/guides/code-splitting-libraries/)  
+在index.js文件里有如下代码,引入了第三方库:
+```js
+const async=require("async");
+document.write("jiangguotaowwww1111zzz");
+```
+如果我们不使用CommonsChunkPlugin，入口文件编译的bundle就包含了index.js和async.js的代码。如果多引用几个，文件就会很大。如图：  
+![image](./wikiImg/CommonsChunkPlugin_1.png)  
+使用CommonsChunkPlugin,在文件里配置：  
+```js
+//配置入口函数
+entry:{
+        main:"./app/index.js",
+        vendor:'async'
+    },
+    //使用插件
+    plugins:[
+            new webpack.optimize.CommonsChunkPlugin({
+                name: 'vendor' // 指定公共 bundle 的名字。
+            })
+        ]
+```
+这样async就会被打包到vendorbundle里了。从两个文件的大小可以看出来：  
+![image](./wikiImg/CommonsChunkPlugin_2.png)  
+话说在项目中应该有很多这样的第三方库吧，我们不可能 vendor:'async'一点一点的这样写吧。那该如何处理呢？  
