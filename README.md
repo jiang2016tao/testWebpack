@@ -159,3 +159,6 @@ entry:{
 这样async就会被打包到vendorbundle里了。从两个文件的大小可以看出来：  
 ![image](./wikiImg/CommonsChunkPlugin_2.png)  
 话说在项目中应该有很多这样的第三方库吧，我们不可能 vendor:'async'一点一点的这样写吧。那该如何处理呢？  
+# 缓存  
+[缓存](http://www.css88.com/doc/webpack2/guides/caching/)  
+不要在开发环境下使用[chunkhash]，因为这会增加编译时间。将开发和生产模式的配置分开，并在开发模式中使用[name].js的文件名， 在生产模式中使用[name].[chunkhash].js文件名。  
