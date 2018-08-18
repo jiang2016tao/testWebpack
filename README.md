@@ -333,4 +333,4 @@ optimization: {
 有了这些配置，我们几乎不需要任何成功就能删除之前CommonChunkPlugin的代码。  
 通过判断splitChunks.chunks的值来确定哪些模块会提取公共模块，该配置一共有三个选项，initial、async、 all。 
 默认为async，表示只会提取异步加载模块的公共代码，initial表示只会提取初始入口模块的公共代码，all表示同时提取前两者的代码。
-这三种方式的区别请参考标题下的optimization解释 (#optimization)   
+这三种方式的区别请参考标题下的 <a href="#optimization">optimization解释</a>  
