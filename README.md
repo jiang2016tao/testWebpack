@@ -171,4 +171,166 @@ entry:{
 在项目中首页index.html已经引入了部分库文件，如图：  
 ![image](./wikiImge/externals_1.png)  
 由于已经通过script引用了，所以在编译时，不需要将这些依赖包编译打包文件里，直接在文件里引用就行了，webpack配置如图：   
-![image](./wikiImge/externals_2.png)  
+![image](./wikiImge/externals_2.png)   
+ # publicPath  
+ [官网解释](http://www.css88.com/doc/webpack2/guides/public-path/)  
+ webpack 提供一个非常有用的配置，该配置能帮助你为项目中的所有资源指定一个基础路径。它被称为公共路径(publicPath)。  
+ 在项目中之前我们没有配置这个，启动webpack的时候，进行菜单切换就会有问题，那是因为我们菜单的配置都是写了项目的（如:/ims_smart_web/^^）。当没有配置时本地直接在/下，所以路径都
+ 不对，这是加上publicPath这个配置，并且值为/ims_smart_web/就可以了。配置代码如下：     
+ ```js
+ devServer: {
+         port: 3000,
+         publicPath: PUBLIC_PATH,
+         overlay: {
+             errors: true,
+             warnings: true
+         }
+     }
+ ```
+ ```js
+ output: {
+         path: path.join(ROOT_PATH, 'dist'),
+         publicPath: PUBLIC_PATH,
+         filename: "js/[name].[chunkhash].js",
+         chunkFilename: "js/[name].[chunkhash].chunk.js"
+     }
+ ```
+ 对于按需加载(on-demand-load)或加载外部资源(external resources)（如图片、文件等）来说，output.publicPath 是很重要的选项。如果指定了一个错误的值，则在加载这些资源时会收到 404 错误。 
+ 此选项指定在浏览器中所引用的「此输出目录对应的公开 URL」。相对 URL(relative URL) 会被相对于 HTML 页面（或 <base> 标签）解析。相对于服务的 URL(Server-relative URL)，相对于协议的 URL(protocol-relative URL) 或绝对 URL(absolute URL) 也可是可能用到的，或者有时必须用到，例如：当将资源托管到 CDN 时。  
+ 该选项的值是以 runtime(运行时) 或 loader(加载器载入时) 所创建的每个 URL 为前缀。因此，在多数情况下，此选项的值都会以/结束。  
+ 默认值是一个空字符串 ""。  
+ 这样我就理解了，当初在项目中本地启动webpack图片显示不出来，而发环境后图片能正确显示的原因了(在加载 CSS 的一个图片时,webpack-dev-server 也会默认从 publicPath 为基准，
+ 使用它来决定在哪个目录下启用服务，来访问 webpack 输出的文件。)。所以建议在开发的时候还是配置publicPath这个属性.  
+ 重点参考[output的各项配置](http://www.css88.com/doc/webpack2/configuration/output/)  
+ # Module  
+ [Module各项配置说明](http://www.css88.com/doc/webpack2/configuration/module/)  
+   ## rules  
+   官网给的说明，但是自己不怎理解。  
+   >创建模块时，匹配请求的规则数组。这些规则能够修改模块的创建方式。这些规则能够对模块(module)应用加载器(loader)，或者修改解析器(parser)。
+   
+   ### use  
+   应用于模块的 UseEntries 列表。每个入口(entry)指定使用一个 loader。  
+   ### test   
+   匹配条件。约定了提供一个正则或正则数组，但不是强制的。  
+   ### include  
+   匹配条件。约定了提供一个字符串或字符串数组，但不是强制的。  
+   ### exclude  
+   不能匹配条件。约定了提供一个字符串或字符串数组，但不是强制的。  
+# devServer  
+[devServer配置](http://www.css88.com/doc/webpack2/configuration/dev-server/)  
+本地开发环境使用的配置项。通过来自 webpack-dev-server 的这些选项，能够用多种方式改变其行为。  
+# dectool  
+[开发工具](http://www.css88.com/doc/webpack2/configuration/devtool/)  
+eval - 每个模块都使用 eval() 执行，并且都有 //@ sourceURL。此选项会相当快地构建。主要缺点是，由于会映射到转换后的代码，而不是映射到原始代码，所以不能正确的显示显示行数。  
+inline-source-map - SourceMap 转换为 DataUrl 后添加到 bundle 中。  
+eval-source-map - 每个模块使用 eval() 执行，并且 SourceMap 转换为 DataUrl 后添加到 eval() 中。初始化 SourceMap 时比较慢，但是会在重构建时提供很快的速度，并且生成实际的文件。行数能够正确映射，因为会映射到原始代码中。  
+cheap-module-eval-source-map - 就像 eval-source-map，每个模块使用 eval() 执行，并且 SourceMap 转换为 DataUrl 后添加到 eval() 中。"低开销"是因为它没有生成列映射(column map)，只是映射行数。  
+
+# 插件  
+## ProvidePlugin  
+[ProvidePlugin](http://www.css88.com/doc/webpack2/plugins/provide-plugin/)  
+使用该插件加载的bundle库类，可以在整个应用中直接使用。官网解释是
+>自动加载模块。 任何时候，当 identifier 被当作未赋值的变量时， module 就会自动被加载，并且 identifier 会被这个 module 输出的内容所赋值。实例代码如下：    
+```js
+new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery'
+})
+```
+在实际项目中使用示例：  
+```js
+new webpack.ProvidePlugin({ //加载jq
+            _: 'lodash',
+            $: "jquery"
+        })
+```
+## extract-text-webpack-plugin  
+提取单独打包css文件  
+## transfer-webpack-plugin  
+将源目录文件copy到目标目录文件  
+## htmlWebpackPlugin  
+```js
+new htmlWebpackPlugin({
+            title:"欢迎",
+            // chunks:["build"]
+            filename:"index.html",
+            template:'./index.html',
+            chunks:["main"],    //需要引入的chunk
+            inject:true,
+            hash:true
+        })
+```
+- filename:生成html存放路径，相对于编译包的目录.  
+- template:html模板路径。  
+- chunks:页面需要引入的js文件  
+- inject:允许插件修改head与body  
+- hash:为静态资源生成hash值  
+# optimization  
+<a name="optimization"></a>  
+[optimization解释](https://blog.csdn.net/qq_16339527/article/details/80641245)  
+这个是webpack4新特性，optimization.splitChunks来进行代码的拆分，使用optimization.runtimeChunk来提取webpack的runtime代码，引入了新的cacheGroups概念。
+之前CommonsChunkPlugin虽然能用，但是配置不够灵活，难以理解，minChunks有时候为数字，有时候为函数，并且如果同步模块与异步模块都引入了相同的module并不能将公共部分提取出来，
+最后打包生成的js还是存在相同的module。  
+- minSize：30000//模块大于30k会被抽离到公共模块
+- minimize:true//是否进行代码压缩  
+- minChunks:1//模块出现1次就会被抽离到公共模块  
+- maxAsyncRequests:5// 异步模块，一次最多只能被加载5个  
+- maxInitialRequests:3// 入口模块最多只能加载3个  
+```js
+optimization: {
+        splitChunks: {
+            chunks: 'initial',
+            minSize: 0,
+            name: true,
+            cacheGroups: {
+                default: {
+                    name: 'app',
+                    chunks: 'initial',
+                    enforce: true,
+                    reuseExistingChunk: true,
+                    minChunks: 2,
+                },
+                vendors: {
+                    name: 'vendors',
+                    enforce: true,
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: 10,
+                    reuseExistingChunk: true,
+                    minChunks: 1,
+                },
+                commons: {
+                    name: 'commons',
+                    enforce: true,
+                    chunks: 'initial',
+                    minChunks: 1,
+                    test: /[\\/]components[\\/]/,
+                    priority: 10,
+                    reuseExistingChunk: true,
+                },
+                screens: {
+                    name: 'screens',
+                    enforce: true,
+                    chunks: 'initial',
+                    minChunks: 1,
+                    test: /[\\/]screens[\\/]/,
+                    priority: 5,
+                    reuseExistingChunk: true,
+                },
+                tpl: {
+                    name: 'tpl',
+                    enforce: true,
+                    chunks: 'initial',
+                    minChunks: 1,
+                    test: /[\\/]tpl[\\/]/,
+                    priority: 5,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
+
+    }
+```
+有了这些配置，我们几乎不需要任何成功就能删除之前CommonChunkPlugin的代码。  
+通过判断splitChunks.chunks的值来确定哪些模块会提取公共模块，该配置一共有三个选项，initial、async、 all。 
+默认为async，表示只会提取异步加载模块的公共代码，initial表示只会提取初始入口模块的公共代码，all表示同时提取前两者的代码。
+这三种方式的区别请参考标题下的optimization解释(#optimization)   
