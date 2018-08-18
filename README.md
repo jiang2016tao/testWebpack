@@ -162,3 +162,13 @@ entry:{
 # 缓存  
 [缓存](http://www.css88.com/doc/webpack2/guides/caching/)  
 不要在开发环境下使用[chunkhash]，因为这会增加编译时间。将开发和生产模式的配置分开，并在开发模式中使用[name].js的文件名， 在生产模式中使用[name].[chunkhash].js文件名。  
+# noParse  
+配置那些文件可以脱离webpack的解析，节省构建时间,将会直接引入这个模块.    
+![image](./wikiImg/noParse_1.png)  
+# externals  
+[externals详解](https://www.tangshuang.net/3343.html)   
+就是webpack不需要将一些依赖包编译到文件里，让用户自己去提供，程序在文件里引用就行了，*但是不同的环境，externals的配置文件就不一样*。  
+在项目中首页index.html已经引入了部分库文件，如图：  
+![image](./wikiImge/externals_1.png)  
+由于已经通过script引用了，所以在编译时，不需要将这些依赖包编译打包文件里，直接在文件里引用就行了，webpack配置如图：   
+![image](./wikiImge/externals_2.png)  
