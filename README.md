@@ -169,9 +169,9 @@ entry:{
 [externals详解](https://www.tangshuang.net/3343.html)   
 就是webpack不需要将一些依赖包编译到文件里，让用户自己去提供，程序在文件里引用就行了，*但是不同的环境，externals的配置文件就不一样*。  
 在项目中首页index.html已经引入了部分库文件，如图：  
-![image](./wikiImge/externals_1.png)  
+![image](./wikiImg/externals_1.png)  
 由于已经通过script引用了，所以在编译时，不需要将这些依赖包编译打包文件里，直接在文件里引用就行了，webpack配置如图：   
-![image](./wikiImge/externals_2.png)   
+![image](./wikiImg/externals_2.png)   
  # publicPath  
  [官网解释](http://www.css88.com/doc/webpack2/guides/public-path/)  
  webpack 提供一个非常有用的配置，该配置能帮助你为项目中的所有资源指定一个基础路径。它被称为公共路径(publicPath)。  
